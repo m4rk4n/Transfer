@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Transfer.DAL;
 
 namespace Transfer.Migrations
 {
     [DbContext(typeof(TransferContext))]
-    partial class TransferContextModelSnapshot : ModelSnapshot
+    [Migration("20180917135952_OptionalForeignKeys")]
+    partial class OptionalForeignKeys
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -251,8 +253,6 @@ namespace Transfer.Migrations
                     b.Property<string>("TransferFrom");
 
                     b.Property<string>("TransferTo");
-
-                    b.Property<int?>("VehicleId");
 
                     b.HasKey("Id");
 

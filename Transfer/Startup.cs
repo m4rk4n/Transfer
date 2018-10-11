@@ -18,6 +18,11 @@ using Microsoft.IdentityModel.Tokens;
 using Transfer.DAL;
 using Transfer.Models;
 using System.Security.Claims;
+using Transfer.DAL.Repositories.Interfaces;
+using Transfer.DAL.Repositories;
+using Transfer.BLL;
+using Transfer.BLL.Interfaces;
+using AutoMapper;
 
 namespace Transfer
 {
@@ -97,14 +102,21 @@ namespace Transfer
             })
             .AddEntityFrameworkStores<TransferContext>();
 
-            services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
+            services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1)
+                  .AddJsonOptions(opt => opt.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore);
 
+            services.AddAutoMapper();
             services.AddTransient<TransferSeeder>();
             services.AddScoped<ITransferRepository, TransferRepository>();
+            services.AddScoped<IAgencyService, AgencyService>();
+            services.AddScoped<IPartnerService, PartnerService>();
+            services.AddScoped<IVehicleService, VehicleService>();
+            services.AddScoped<ITransferService, TransferService>();
             services.AddDbContext<TransferContext>(cfg =>
             {
                 cfg.UseSqlServer(config.GetConnectionString("TransferConnectionString"));
             });
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

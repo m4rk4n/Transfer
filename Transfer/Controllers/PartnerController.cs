@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Authentication.JwtBearer;
+﻿using AutoMapper;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -9,8 +10,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Transfer.BLL;
+using Transfer.BLL.Interfaces;
 using Transfer.DAL;
 using Transfer.Models;
+using Transfer.ViewModels;
 
 namespace Transfer.Controllers
 {
@@ -19,70 +23,107 @@ namespace Transfer.Controllers
     public class PartnerController : Controller
     {
         private readonly ILogger<PartnerController> logger;
-        private readonly SignInManager<TransferUser> signInManager;
-        private readonly UserManager<TransferUser> userManager;
-        private readonly IConfiguration config;
-        private readonly RoleManager<IdentityRole> roleManager;
-        private readonly TransferContext ctx;
+        private readonly IPartnerService service;
+        private readonly IMapper mapper;
 
         public PartnerController(ILogger<PartnerController> logger,
-            SignInManager<TransferUser> signInManager,
-            UserManager<TransferUser> userManager,
-            IConfiguration config,
-            RoleManager<IdentityRole> roleManager,
-            TransferContext ctx)
+            IPartnerService service,
+            IMapper mapper)
         {
             this.logger = logger;
-            this.signInManager = signInManager;
-            this.userManager = userManager;
-            this.config = config;
-            this.roleManager = roleManager;
-            this.ctx = ctx;
+            this.service = service;
+            this.mapper = mapper;
         }
 
         [HttpPost]
         // [Authorize]
-        public async Task<IActionResult> Post([FromBody]Partner model)
+        public async Task<IActionResult> Post([FromBody]PartnerAddViewModel model)
         {
             try
             {
                 if (ModelState.IsValid)
                 {
-                    // mapper!!!
-                    Partner newPartner = new Partner
+                   // var newPartner = mapper.Map<PartnerAddViewModel, Partner>(model);
+
+                    var savedPartner = service.Add(model.Partner, model.VehicleId); //AddAsync ?
+
+                    if (savedPartner != null)
                     {
-                        Name = model.Name,
-                        Phone = model.Phone,
-                        Email = model.Email
-                    };
-
-                    
-
-                    var currentUser = await userManager.FindByNameAsync(User.Identity.Name); // hmm, debug through this one
-
-
-                    ctx.Partners.Add(newPartner);
-                    if (ctx.SaveChanges() > 0)
+                        return Created($"/api/partner/{savedPartner.Id}", savedPartner);
+                    }
+                    else
                     {
-                        // kad udje, nece imat id, al ce mu kontext dodjelit id nakon Add()
-                        //   return Created($"/api/orders/{newOrder.Id}", mapper.Map<Order, OrderViewModel>(newOrder));
-                        // HTTP response 201 when you create a new object
-
-                        return Created($"/api/partner/{newPartner.Id}", newPartner);
+                        logger.LogError("savedPartner was null");
+                        return BadRequest(ModelState);
                     }
                 }
                 else
                 {
+                    logger.LogError("ModelState is not valid");
                     return BadRequest(ModelState);
                 }
             }
             catch (Exception ex)
             {
                 logger.LogError($"Failed to save new partner: {ex}");
-                return BadRequest($"Failed to save new partner beacuse of exception, end user better not see this one :)");
+                return BadRequest($"Failed to save new partner beacuse of exception ");
             }
-            logger.LogError($"Failed to save new partner: Not an excception");
-            return BadRequest("Failed to save new partner, not an exception");
+        }
+
+        // GET api/values/5
+        [HttpGet("{id}")]
+        public ActionResult<PartnerViewModel> Get(int id)
+        {
+            var partner = service.GetById(id);
+            if (partner != null)
+            {
+                return Ok(mapper.Map<Partner, PartnerViewModel>(partner));
+            }
+            else
+            {
+                return NotFound();
+            }
+        }
+
+        // GET api/values
+        [HttpGet]
+        public ActionResult<IEnumerable<PartnerViewModel>> Get()
+        {
+            var partners = service.GetAll();
+            if (partners != null)
+            {
+                return Ok(mapper.Map<IEnumerable<Partner>, IEnumerable<PartnerViewModel>>(partners));
+            }
+            else
+            {
+                return BadRequest();
+            }
+        }
+
+        // PUT api/values/5
+        [HttpPut("{id}")]
+        public ActionResult<PartnerViewModel> Put(int id, [FromBody] PartnerUpdateViewModel model)
+        {
+           // var partner = mapper.Map<Partner>(model.Partner);
+            var updatedPartner = service.Update(model, model.Partner.Id);
+            if (updatedPartner != null)
+            {
+                logger.LogInformation("partner updated");
+                return Ok(updatedPartner);
+            }
+            else
+            {
+                return BadRequest();
+            }
+        }
+
+        // DELETE api/values/5
+        [HttpDelete("{id}")]
+        public ActionResult Delete(int id)
+        {
+            //var partner = service.GetById(id);
+            service.Remove(id);
+            return Ok(); // kako ovdje provjeru 
         }
     }
 }

@@ -27,6 +27,20 @@ namespace Transfer.DAL
         {
             ctx.Database.EnsureCreated();
 
+
+            if (ctx.Vehicles.Count() == 0)
+            {
+                ctx.Vehicles.Add(
+                    new Vehicle
+                    {
+                        Name = "Auto1",
+                        Note = "poyy",
+                        RegistrationDate = DateTime.Now,
+                        PlateNumber = "12321"
+                    });
+            }
+
+            ctx.SaveChanges();
             if (ctx.Partners.Count() == 0)
             {
                 ctx.Partners.Add(
@@ -34,9 +48,13 @@ namespace Transfer.DAL
                     {
                         Name = "Partner Prvi",
                         Phone = "3456787",
-                        Email = "neki@mail.com"
+                        Email = "neki@mail.com",
+                        VehicleId = 1
                     });
             }
+
+
+            ctx.SaveChanges();
 
             bool x = await roleManager.RoleExistsAsync("Admin");
             if (!x)
@@ -45,6 +63,8 @@ namespace Transfer.DAL
                 role.Name = "Admin";
                 await roleManager.CreateAsync(role);
             }
+
+            ctx.SaveChanges();
 
             var user = await userManager.FindByEmailAsync("admin@admin.com");
 

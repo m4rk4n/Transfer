@@ -62,7 +62,7 @@ namespace Transfer.Controllers
 
                         var userClaims = await userManager.GetClaimsAsync(user);
                         var userRoles = await userManager.GetRolesAsync(user);
-                        claims.AddRange(userClaims); //
+                        claims.AddRange(userClaims); 
 
                         foreach( var userRole in userRoles)
                         {

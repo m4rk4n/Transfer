@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Transfer.DAL;
 
 namespace Transfer.Migrations
 {
     [DbContext(typeof(TransferContext))]
-    partial class TransferContextModelSnapshot : ModelSnapshot
+    [Migration("20180917112457_InitialUpdate")]
+    partial class InitialUpdate
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -173,13 +175,12 @@ namespace Transfer.Migrations
 
                     b.Property<string>("Phone");
 
-                    b.Property<int?>("VehicleId");
+                    b.Property<int>("VehicleId");
 
                     b.HasKey("Id");
 
                     b.HasIndex("VehicleId")
-                        .IsUnique()
-                        .HasFilter("[VehicleId] IS NOT NULL");
+                        .IsUnique();
 
                     b.ToTable("Partners");
                 });
@@ -252,8 +253,6 @@ namespace Transfer.Migrations
 
                     b.Property<string>("TransferTo");
 
-                    b.Property<int?>("VehicleId");
-
                     b.HasKey("Id");
 
                     b.HasIndex("AgencyId");
@@ -322,7 +321,7 @@ namespace Transfer.Migrations
                         .ValueGeneratedOnAdd()
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<int?>("LastServiceTransferId");
+                    b.Property<int>("LastServiceTransferId");
 
                     b.Property<string>("Name");
 
@@ -335,8 +334,7 @@ namespace Transfer.Migrations
                     b.HasKey("Id");
 
                     b.HasIndex("LastServiceTransferId")
-                        .IsUnique()
-                        .HasFilter("[LastServiceTransferId] IS NOT NULL");
+                        .IsUnique();
 
                     b.ToTable("Vehicles");
                 });
@@ -403,7 +401,8 @@ namespace Transfer.Migrations
                 {
                     b.HasOne("Transfer.Models.Vehicle", "Vehicle")
                         .WithOne("Partner")
-                        .HasForeignKey("Transfer.Models.Partner", "VehicleId");
+                        .HasForeignKey("Transfer.Models.Partner", "VehicleId")
+                        .OnDelete(DeleteBehavior.Cascade);
                 });
 
             modelBuilder.Entity("Transfer.Models.Transfer", b =>
@@ -421,7 +420,8 @@ namespace Transfer.Migrations
                 {
                     b.HasOne("Transfer.Models.Transfer", "LastService")
                         .WithOne("Vehicle")
-                        .HasForeignKey("Transfer.Models.Vehicle", "LastServiceTransferId");
+                        .HasForeignKey("Transfer.Models.Vehicle", "LastServiceTransferId")
+                        .OnDelete(DeleteBehavior.Cascade);
                 });
 #pragma warning restore 612, 618
         }

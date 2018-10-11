@@ -4,10 +4,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Transfer.DAL
+namespace Transfer.DAL.Repositories.Interfaces
 {
     public interface ITransferRepository
     {
-        bool SaveAll();
+
     }
 }
