@@ -1,0 +1,29 @@
+<button  routerLink="/vehicle/Add">Add a vehichle</button>
+<div>
+  <table class="table">
+    <tr>
+        <td><strong>Name</strong></td>
+        <td><strong>Registration Date</strong></td>
+        <td><strong>Plate Number</strong></td>
+        <td><strong>Note</strong></td>
+    </tr>
+    <tr *ngFor="let vehicle of Vehicles">
+      <td>{{ vehicle.name }}</td>
+      <td>{{ vehicle.registrationDate | date:'shortDate' }}</td>
+      <td>{{ vehicle.plateNumber }}</td>
+      <td>{{ vehicle.note }}</td>
+      <td>
+        <button class="btn btn-dark" (click)="OnUpdateClicked(vehicle)">Update</button>
+        <button type="button" class="btn btn-dark" (click)="openModal(template)">Delete</button>
+
+        <ng-template #template>
+          <div class="modal-body text-center">
+            <p>Do you want to delete vehicle with name <strong>{{ vehicle.name }}</strong>?</p>
+            <button type="button" class="btn btn-default" (click)="confirmDeleteModal(vehicle)">Yes</button>
+            <button type="button" class="btn btn-primary" (click)="decline()">No</button>
+          </div>
+        </ng-template>
+      </td>
+    </tr>
+  </table>
+</div>

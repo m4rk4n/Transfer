@@ -1,0 +1,37 @@
+
+<!--// name, registrationdate, PlateNumber, note-->
+<div class="row">
+  <div class="col-md-4 offset-md-4">
+    <div *ngIf="errorMessage" class="alert alert-warning">{{ errorMessage }}</div>
+    <form (submit)="OnAddNewVehicle()" #theForm="ngForm" novalidate>
+      <div class="form-group">
+        <label for="Vehicle Name">Vehicle Name</label>
+        <input type="text" class="form-control" name="vehicleName" [(ngModel)]="vehicle.name" #vehicleName="ngModel" required />
+        <div class="text-danger" *ngIf="vehicleName.touched && vehicleName.invalid && vehicleName.errors.required">Vehicle Name is required!</div>
+      </div>
+      <div class="form-group">
+        <label for="Registration Date">Registration Date</label>
+        <div class="form-group">
+          <input type="text" class="form-control" #dp="bsDatepicker" placement="right" placeholder="Pick a date" [(ngModel)]="regDate" bsDatepicker name="datepicker" [bsConfig]="bsConfig">
+        </div>
+        <!--<div class="text-danger" *ngIf="vehicleRegistrationDate.touched && vehicleRegistrationDate.invalid && vehicleRegistrationDate.errors.required">Vehicle Registration date is required!</div>-->
+      </div>
+      <div class="form-group">
+        <label for="vehiclePlateNumber">Plate Number</label>
+        <input type="text" class="form-control" name="vehiclePlateNumber" [(ngModel)]="vehicle.plateNumber" required #vehiclePlateNumber="ngModel" />
+        <div class="text-danger" *ngIf="vehiclePlateNumber.touched && vehiclePlateNumber.invalid && vehiclePlateNumber.errors.required">Vehicle plate number is required!</div>
+      </div>
+      <div class="form-group">
+        <label for="Note">Note</label>
+        <input type="text" class="form-control" name="vehicleNote" [(ngModel)]="vehicle.note"
+               required
+               #vehicleNote="ngModel" />
+        <!--<div class="text-danger" *ngIf="vehicleNote.touched && vehicleNote.invalid && vehicleNote.errors.required">Vehicle plate number is required!</div>-->
+      </div>
+      <div class="form-group">
+        <input type="submit" class="btn btn-success" value="Add Vehicle" [disabled]="theForm.invalid" />
+        <a routerLink="../" class="btn btn-default">Cancel</a>
+      </div>
+    </form>
+  </div>
+</div>

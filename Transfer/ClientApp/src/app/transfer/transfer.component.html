@@ -1,0 +1,183 @@
+<div class="row">
+  <div class="col-md-8 offset-md-2">
+      <div *ngIf="errorMessage" class="alert alert-warning">{{ errorMessage }}</div>
+      <form (submit)="OnAddNewTransfer()" #theForm="ngForm" novalidate>
+    <tabset #tabovi type="pills">
+      <tab heading="User info" id="tab1">
+        <!--Maybe get following info from users account?-->
+        <div class="form-group">
+          <label for="FirstName">First Name</label>
+          <input type="text" class="form-control" name="FirstName" [(ngModel)]="transfer.firstName" />
+        </div>
+
+        <div class="form-group">
+          <label for="LastName">Last Name</label>
+          <input class="form-control" type="text" name="LastName" [(ngModel)]="transfer.lastName" />
+        </div>
+        <div class="form-group">
+          <label for="phone">Phone Number</label>
+          <input type="text" class="form-control" [(ngModel)]="transfer.phoneNumber" pattern="[^a-zA-Z]*" id="phone" name="phone" ngModel #phoneref="ngModel" required />
+          <div class="text-danger" *ngIf="phoneref.touched && phoneref.invalid && phoneref.errors.required">User phone is required!</div>
+          <div *ngIf="phoneref.errors &&(phoneref.touched  || phoneref.dirty)">
+            <div [hidden]="!phoneref.errors?.pattern" class="text-danger">
+              Invalid Phone Number!
+            </div>
+          </div>
+        </div>
+        <div class="form-group">
+          <label for="email">Email</label>
+          <input type="text" class="form-control" [(ngModel)]="transfer.email" required pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,3}$" id="email" name="email" ngModel #emailref="ngModel" />
+          <div class="text-danger" *ngIf="emailref.touched && emailref.invalid && emailref.errors.required">User Email is required!</div>
+          <div *ngIf="emailref.errors &&(emailref.touched || emailref.dirty)">
+            <div [hidden]="!emailref.errors?.pattern" class="text-danger">
+              Invalid Email!
+            </div>
+          </div>
+        </div>
+
+        <!--select from list?-->
+        <div class="form-group">
+          <label for="Country">Country</label>
+          <input type="text" class="form-control" name="Country" [(ngModel)]="transfer.country" />
+        </div>
+      </tab>
+
+        <tab heading="Transfer Options" id="tab2">
+          <div class="form-group">
+            <label for="ReservationTime">Reservation Time</label>
+            <timepicker name="ReservationTime" [(ngModel)]="transfer.reservationTime"></timepicker><!--readonly?-->
+          </div>
+          <div class="form-group">
+            <label for="AgencyTravel">Agency Travel</label>
+            <input type="checkbox" name="AgencyTravel" [(ngModel)]="transfer.agencyTravel" (change)="OnAgencyTravelChanged()" />
+          </div>
+
+          <div class="form-group" *ngIf="agencyTravel">
+            <label for="select1">Agencies</label>
+            <select [ngModel]="selectedAgency" (ngModelChange)="OnAgencySelected($event)" name="select1">
+              <option [ngValue]="agency" *ngFor="let agency of agencies">{{ agency.name }}</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label for="select2">Partners</label>
+            <select [ngModel]="selectedPartner" (ngModelChange)="OnPartnerSelected($event)" name="select2">
+              <option [ngValue]="partner" *ngFor="let partner of partnersToChooseFrom">{{ partner.name }}</option>
+            </select>
+
+            <div *ngIf="partnerVehicle">
+              <label for="partnerVehicle">Partner's vehicle</label>
+              <input type="text" name="partnerVehicle" value="{{ partnerVehicle.name }}" disabled />
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label for="TransferFrom">Transfer From</label>
+            <input type="text" class="form-control" name="TransferFrom" [(ngModel)]="transfer.transferFrom" />
+          </div>
+          <div class="form-group">
+            <label for="TransferTo">Transfer To</label>
+            <input type="text" class="form-control" name="TransferTo" [(ngModel)]="transfer.transferTo" />
+          </div>
+          <div class="form-group">
+            <label for="TransferDuration">Transfer Duration</label>
+            <input type="text" class="form-control" name="TransferDuration" [(ngModel)]="transfer.transferDuration" />
+          </div>
+          <div class="form-group">
+            <label for="PickupAddress">Pickup Address</label>
+            <input type="text" class="form-control" name="PickupAddress" [(ngModel)]="transfer.pickupAddress" />
+          </div>
+          <div class="form-group">
+            <label for="FlightNumber">Flight Number</label>
+            <input type="text" class="form-control" name="FlightNumber" [(ngModel)]="transfer.flightNumber" />
+          </div>
+
+          <div class="form-group">
+            <label for="DepartureDate">Departure Date</label>
+            <input type="text"
+                   class="form-control"
+                   name="DepartureDate"
+                   bsDatepicker
+                   [bsValue]="transfer.departureDate">
+          </div>
+
+          <div class="form-group">
+            <label for="PickupDepartureTime">Pickup Departure Time</label>
+            <timepicker name="PickupDepartureTime" [(ngModel)]="transfer.pickupDepartureTime"></timepicker>
+          </div>
+
+          <div class="form-group">
+            <label for="RoundTrip">Round Trip</label>
+            <input type="checkbox" name="RoundTrip" [(ngModel)]="transfer.roundTrip" />
+          </div>
+
+        </tab>
+
+        <tab heading="Additional Transfer Options">
+          <div class="form-group">
+            <label for="NumberOfPassengers">Number Of Passengers</label>
+            <input type="number" class="form-control" name="NumberOfPassengers" [(ngModel)]="transfer.numberOfPassengers" />
+          </div>
+
+          <div class="form-group">
+            <label for="ChildSeats">Child Seats</label>
+            <input type="number" class="form-control" name="ChildSeats" [(ngModel)]="transfer.childSeats" />
+          </div>
+
+          <div class="form-group">
+            <label for="Boosters">Boosters</label>
+            <input type="number" class="form-control" name="Boosters" [(ngModel)]="transfer.boosters" />
+          </div>
+
+          <div class="form-group">
+            <label for="Notice">Notice</label>
+            <input type="text" class="form-control" name="Notice" [(ngModel)]="transfer.notice" />
+          </div>
+
+          <div class="form-group">
+            <label for="Message">Message</label>
+            <input type="text" class="form-control" name="Message" [(ngModel)]="transfer.message" />
+          </div>
+
+        </tab>
+
+        <tab heading="Payment Options">
+          <div class="form-group">
+            <label for="Paid">Paid</label>
+            <input type="checkbox" name="Paid" [(ngModel)]="transfer.paid" />
+          </div>
+
+          <div class="form-group">
+            <label for="PaymentMethod">Payment Method</label>
+            <input type="text" class="form-control" name="PaymentMethod" [(ngModel)]="transfer.paymentMethod" />
+          </div>
+
+          <div class="form-group">
+            <label for="PaymentMethodNotice">Payment Method Notice</label>
+            <input type="text" class="form-control" name="PaymentMethodNotice" [(ngModel)]="transfer.paymentMethodNotice" />
+          </div>
+
+          <div class="form-group">
+            <label for="PriceInKn">Price In Kn</label>
+            <input type="text" class="form-control" name="PriceInKn" [(ngModel)]="transfer.priceInKn" />
+          </div>
+
+          <div class="form-group">
+            <label for="PriceInEur">Price In Eur</label>
+            <input type="text" class="form-control" name="PriceInEur" [(ngModel)]="transfer.priceInEur" />
+          </div>
+
+          <div class="form-group">
+            <label for="ConfirmTransfer">Confirm Transfer</label>
+            <input type="checkbox" name="ConfirmTransfer" [(ngModel)]="transfer.confirmTransfer" />
+          </div>
+
+          <div class="form-group">
+            <input type="submit" class="btn btn-success" value="Add Transfer" [disabled]="theForm.invalid" />
+            <a routerLink="/" class="btn btn-default">Cancel</a>
+          </div>
+        </tab>
+    </tabset>
+      </form>
+  </div>
+</div>

@@ -1,0 +1,37 @@
+<!--// id, name, phone, email-->
+<div>
+  <table class="table">
+    <thead class="thead-dark">
+      <tr>
+        <th scope="col">Name</th>
+        <th scope="col">Phone</th>
+        <th scope="col">Email</th>
+        <th scope="col">City</th>
+        <th scope="col">Options</th>
+      </tr>
+    </thead>
+    <tr *ngFor="let partner of partners">
+      <td>{{ partner.name}}</td>
+      <td>{{ partner.phone }}</td>
+      <td>{{ partner.email }}</td>
+      <td>{{ partner.city}}</td>
+      <td>
+        <button class="btn btn-dark" (click)="OnUpdateClicked(partner)">Update</button>
+        <button class="btn btn-dark" (click)="openModal(template)">Delete</button>
+
+        <ng-template #template>
+          <div class="modal-body text-center">
+            <p>Do you want to delete partner with name <strong>{{ partner.name }}</strong>?</p>
+            <button type="button" class="btn btn-default" (click)="confirmDeleteModal(partner)">Yes</button>
+            <button type="button" class="btn btn-primary" (click)="decline()">No</button>
+          </div>
+        </ng-template>
+
+      </td>
+    </tr>
+  </table>
+</div>
+
+<div>
+  <button routerLink="/partner/Add" class="btn btn-dark">Add new partner</button>
+</div>

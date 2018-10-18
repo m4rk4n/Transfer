@@ -1,0 +1,41 @@
+<div class="row">
+  <div class="col-md-4 offset-md-4">
+    <div *ngIf="errorMessage" class="alert alert-warning">{{ errorMessage }}</div>
+    <form (submit)="OnAddNewAgency()" #theForm="ngForm" novalidate>
+      <div class="form-group">
+        <label for="Agency Name">{{ 'agency.add-agency.name' | translate }}</label>
+        <input type="text" class="form-control" name="agencyName" [(ngModel)]="agency.name" #agencyName="ngModel" required />
+        <div class="text-danger" *ngIf="agencyName.touched && agencyName.invalid && agencyName.errors.required">{{ 'agency.add-agency.name_required' | translate }}</div>
+      </div>
+      <div class="form-group">
+        <label for="phone">{{ 'agency.add-agency.phone' | translate }}</label>
+        <input type="text" class="form-control" [(ngModel)]="agency.phone" pattern="[^a-zA-Z]*" id="phone" name="phone" ngModel #phoneref="ngModel" required />
+        <div class="text-danger" *ngIf="phoneref.touched && phoneref.invalid && phoneref.errors.required">{{ 'agency.add-agency.phone_required' | translate }}</div>
+        <div *ngIf="phoneref.errors &&(phoneref.touched  || phoneref.dirty)" >
+          <div [hidden]="!phoneref.errors?.pattern" class="text-danger">
+            {{ 'agency.add-agency.phone_pattern' | translate }}
+          </div>
+        </div>
+      </div>
+      <div class="form-group">
+        <label for="email">{{ 'agency.add-agency.email' | translate}}</label>
+        <input type="text" class="form-control" [(ngModel)]="agency.email" required pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,3}$" id="email" name="email" ngModel #emailref="ngModel" />
+        <div class="text-danger" *ngIf="emailref.touched && emailref.invalid && emailref.errors.required">{{ 'agency.add-agency.email_required' | translate }}</div>
+        <div *ngIf="emailref.errors &&(emailref.touched || emailref.dirty)" >
+          <div [hidden]="!emailref.errors?.pattern" class="text-danger">
+            {{ 'agency.add-agency.email_pattern' | translate }}
+          </div>
+        </div>
+      </div>
+      <div class="form-group">
+        <label for="Agency Address">{{ 'agency.add-agency.address' | translate }}</label>
+        <input type="text" class="form-control" name="agencyAddress" [(ngModel)]="agency.address" required #agencyAddress="ngModel" />
+        <div class="text-danger" *ngIf="agencyAddress.touched && agencyAddress.invalid && agencyAddress.errors.required">{{ 'agency.add-agency.address_required' | translate }}</div>
+      </div>
+      <div class="form-group">
+        <input type="submit" class="btn btn-success" value="{{ 'agency.add-agency.add_button' | translate }}" [disabled]="theForm.invalid" />
+        <a routerLink="../" class="btn btn-default">{{ 'agency.add-agency.cancel' | translate}}</a>
+      </div>
+    </form>
+  </div>
+</div>
