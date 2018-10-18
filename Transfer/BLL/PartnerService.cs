@@ -33,13 +33,6 @@ namespace Transfer.BLL
         {
             using (var uow = new UnitOfWork(ctx))
             {
-                Vehicle vehicle = null;
-                if (vehicleId != null)
-                {
-                    vehicle = uow.vehicleRepository.GetById(vehicleId);
-                    entity.Vehicle = vehicle;
-                }
-
                 uow.partnerRepository.Add(entity);
                 
                 if (uow.Complete())
@@ -137,6 +130,7 @@ namespace Transfer.BLL
             }
         }
 
+        // same  logic as in Agency Update()
         public Partner Update(PartnerUpdateViewModel model, object partnerId)
         {
             using (var uow = new UnitOfWork(ctx))
@@ -145,6 +139,7 @@ namespace Transfer.BLL
                 List<PartnerAgenciesViewModel> oldAgencies = new List<PartnerAgenciesViewModel>();
                 var allAgencies = uow.agencyRepository.GetAll();
                 var partner = uow.partnerRepository.GetById((int)partnerId);
+                partner.City = model.Partner.City;
                 var partnerVehicle = uow.vehicleRepository.GetById(model.VehicleId);
 
                 if (partner.Vehicle != partnerVehicle)
@@ -180,7 +175,7 @@ namespace Transfer.BLL
                     };
                     oldAgencies.Add(d);
                 }
-                // ===========================
+
                 foreach (var newPartnerAgency in model.PartnerAgencies)
                 {
                     var oldPartnerAgency = oldAgencies.First(id => id.AgencyId == newPartnerAgency.AgencyId);
@@ -194,7 +189,7 @@ namespace Transfer.BLL
                                     new AgencyPartner
                                     {
                                         PartnerId = (int)partnerId,
-                                        AgencyId = (int)newPartnerAgency.AgencyId                                    });
+                                        AgencyId = newPartnerAgency.AgencyId                                    });
                             }
                             else //agency is removed from partner
                             {
@@ -205,12 +200,11 @@ namespace Transfer.BLL
                         }
                         else // there is no difference in join table entry
                         {
-                            continue;
+                            ;
                         }
                     }
                 }
 
-                //var updated = uow.partnerRepository.Update(mapper.Map<Partner>(model.Partner), model.Partner.Id);
                 var updated = uow.partnerRepository.Update(partner, partner.Id);
                 uow.Complete();
                 return updated;

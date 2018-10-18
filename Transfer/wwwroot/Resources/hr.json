@@ -1,0 +1,64 @@
+{
+  "navigation": {
+    "brand": "Transfer Poduzeće",
+    "home": "Naslovnica",
+    "agency": "Agencija",
+    "partner": "Partner",
+    "vehicle": "Vozilo",
+    "transfer": "Transfer",
+    "login": "Prijava",
+    "logout": "Odjava",
+    "register": "Registracija"
+  },
+  "home": {
+    "greeting": "Dobrošli u aplikaciju tvrtke Transfer!"
+  },
+  "agency": {
+    "add-agency": {
+      "name": "Ime",
+      "name_required": "Ime agencije je neophodno!",
+      "phone": "Telefon",
+      "phone_required": "Broj telefona agencije je neophodan!",
+      "phone_pattern": "Nevažeći broj telefona!",
+      "email": "Email",
+      "email_required": "Adresa elektronske pošte agencije je neophodna!",
+      "email_pattern": "Nevažeća adresa elektronske pošte!",
+      "address": "Adresa",
+      "address_required": "Adresa agencije je neophodna!",
+      "add_button": "Dodaj agenciju",
+      "cancel": "Odustani",
+      "agency_added_toastr": "Nova agencija je dodana!",
+      "failed_to_save_agency_toastr": "Spremanje agencije nije uspjelo :("
+    },
+    "update-agency": {
+      "name": "Ime",
+      "name_required": "Ime agencije je neophodno!",
+      "phone": "Telefon",
+      "phone_required": "Broj telefona agencije je neophodan!",
+      "phone_pattern": "Nevažeći broj telefona!",
+      "email": "Email",
+      "email_required": "Adresa elektronske pošte agencije je neophodna!",
+      "email_pattern": "Nevažeća adresa elektronske pošte!",
+      "address": "Adresa",
+      "address_required": "Adresa agencije je neophodna!",
+      "update_button": "Ažuriraj agenciju",
+      "cancel": "Odustani",
+      "agency_updated_toastr": "Agencija uspješno ažurirana!",
+      "failed_to_save_agency_toastr": "Spremanje agencije nije uspjelo :("
+    },
+    "name": "Ime",
+    "phone": "Telefon",
+    "email": "Email",
+    "address": "Adresa",
+    "options": "Opcije",
+    "update": "Ažuriraj",
+    "delete": "Izbriši",
+    "delete-warning": "Želite li izbrisati agenciju s imenom '{{ agency.name }}'?",
+    "yes": "Da",
+    "no": "Ne",
+    "add": "Dodaj novu agenciju",
+    "toastr_deleted": "Agencija  izbrisana!",
+    "getAllAgencies_error": "Neuspjeh pri dohvaćanju agencija!",
+    "deleteAgency_error": "Neuspjeh pri brisanju agencije"
+  }
+}

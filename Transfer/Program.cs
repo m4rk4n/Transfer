@@ -22,7 +22,7 @@ namespace Transfer
             .ConfigureAppConfiguration(SetupConfiguration)
                 .UseStartup<Startup>();
 
-        private static void SetupConfiguration(WebHostBuilderContext ctx, IConfigurationBuilder builder) // different than asp.net and webconfig
+        private static void SetupConfiguration(WebHostBuilderContext ctx, IConfigurationBuilder builder)
         {
             builder.Sources.Clear();
 

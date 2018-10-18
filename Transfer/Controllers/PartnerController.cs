@@ -43,8 +43,6 @@ namespace Transfer.Controllers
             {
                 if (ModelState.IsValid)
                 {
-                   // var newPartner = mapper.Map<PartnerAddViewModel, Partner>(model);
-
                     var savedPartner = service.Add(model.Partner, model.VehicleId); //AddAsync ?
 
                     if (savedPartner != null)
@@ -70,7 +68,6 @@ namespace Transfer.Controllers
             }
         }
 
-        // GET api/values/5
         [HttpGet("{id}")]
         public ActionResult<PartnerViewModel> Get(int id)
         {
@@ -85,7 +82,6 @@ namespace Transfer.Controllers
             }
         }
 
-        // GET api/values
         [HttpGet]
         public ActionResult<IEnumerable<PartnerViewModel>> Get()
         {
@@ -100,11 +96,9 @@ namespace Transfer.Controllers
             }
         }
 
-        // PUT api/values/5
         [HttpPut("{id}")]
         public ActionResult<PartnerViewModel> Put(int id, [FromBody] PartnerUpdateViewModel model)
         {
-           // var partner = mapper.Map<Partner>(model.Partner);
             var updatedPartner = service.Update(model, model.Partner.Id);
             if (updatedPartner != null)
             {
@@ -117,13 +111,11 @@ namespace Transfer.Controllers
             }
         }
 
-        // DELETE api/values/5
         [HttpDelete("{id}")]
         public ActionResult Delete(int id)
         {
-            //var partner = service.GetById(id);
             service.Remove(id);
-            return Ok(); // kako ovdje provjeru 
+            return NoContent(); // kako ovdje provjeru 
         }
     }
 }

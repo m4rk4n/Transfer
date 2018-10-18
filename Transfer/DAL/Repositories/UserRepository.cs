@@ -10,6 +10,7 @@ using Transfer.Models;
 
 namespace Transfer.DAL.Repositories
 {
+    // is not really used, tried to use identity through all layers, couldn't do it
     public class UserRepository : GenericRepository<TransferUser>, IUserRepository
     {
         private readonly UserManager<TransferUser> userManager;

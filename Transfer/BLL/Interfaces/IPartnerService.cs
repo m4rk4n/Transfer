@@ -11,11 +11,10 @@ namespace Transfer.BLL.Interfaces
     public interface IPartnerService
     {
         IEnumerable<Partner> GetAll();
+        IEnumerable<PartnerAgenciesViewModel> GetPartnerAgencies(object id);
         Partner GetById(object id);
         Partner Add(Partner entity, int? VehicleId);
         Partner Update(PartnerUpdateViewModel model, object partnerId);
         void Remove(object id);
-        IEnumerable<PartnerAgenciesViewModel> GetPartnerAgencies(object id);
-       // bool UpdatePartnerAgencies(List<PartnerAgenciesViewModel> lst, object agencyId);
     }
 }

@@ -1,0 +1,64 @@
+{
+  "navigation": {
+    "brand": "Transfer Company",
+    "home": "Home",
+    "agency": "Agency",
+    "partner": "Partner",
+    "transfer": "Transfer",
+    "vehicle": "Vehicle",
+    "login": "Login",
+    "logout": "Logout",
+    "register": "Register"
+  },
+  "home": {
+    "greeting": "Welcome to Transfer!"
+  },
+  "agency": {
+    "add-agency": {
+      "name": "Name",
+      "name_required": "Agency name is required!",
+      "phone": "Phone",
+      "phone_required": "Agency phone is required!",
+      "phone_pattern": "Invalid phone number!",
+      "email": "Email",
+      "email_required": "Agency email is required!",
+      "email_pattern": "Invalid Email!",
+      "address":  "Address",
+      "address_required": "Agency address is required!",
+      "add_button": "Add the agency",
+      "cancel": "Cancel",
+      "agency_added_toastr": "New agency added!",
+      "failed_to_save_agency_toastr":  "Failed to save the agency"
+    },
+    "update-agency": {
+      "name": "Name",
+      "name_required": "Agency name is required!",
+      "phone": "Phone",
+      "phone_required": "Agency phone is required!",
+      "phone_pattern": "Invalid phone number!",
+      "email": "Email",
+      "email_required": "Agency email is required!",
+      "email_pattern": "Invalid Email!",
+      "address": "Address",
+      "address_required": "Agency address is required!",
+      "update_button": "Update agency",
+      "cancel": "Cancel",
+      "agency_updated_toastr": "Agency updated successfully!",
+      "failed_to_save_agency_toastr": "Failed to save the agency"
+    },
+    "name": "Name",
+    "phone": "Phone",
+    "email": "Email",
+    "address": "Address",
+    "options": "Options",
+    "update": "Update",
+    "delete": "Delete",
+    "delete-warning": "Do you want to delete agency with name '{{ agency.name }}'?",
+    "yes": "Yes",
+    "no": "No",
+    "add": "Add new agency",
+    "toastr_deleted": "Agency Deleted!",
+    "getAllAgencies_error": "Failed to get all agencies!",
+    "deleteAgency_error":  "Failed to delete agency"
+  }
+}

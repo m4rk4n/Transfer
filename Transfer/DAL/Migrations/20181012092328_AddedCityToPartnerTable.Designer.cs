@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Transfer.DAL;
 
 namespace Transfer.Migrations
 {
     [DbContext(typeof(TransferContext))]
-    partial class TransferContextModelSnapshot : ModelSnapshot
+    [Migration("20181012092328_AddedCityToPartnerTable")]
+    partial class AddedCityToPartnerTable
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -274,8 +276,6 @@ namespace Transfer.Migrations
 
                     b.Property<string>("ConcurrencyStamp")
                         .IsConcurrencyToken();
-
-                    b.Property<string>("Country");
 
                     b.Property<string>("Email")
                         .HasMaxLength(256);

@@ -43,21 +43,10 @@ namespace Transfer
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddCors();
-
-            //services.AddAuthorization(options =>
-            //{
-            //    // Here I stored necessary permissions/roles in a constant
-            //    foreach (var prop in typeof(ClaimPermission).GetFields(BindingFlags.Public | BindingFlags.Static | BindingFlags.FlattenHierarchy))
-            //    {
-            //        options.AddPolicy(prop.GetValue(null).ToString(), policy => policy.RequireClaim(ClaimType.Permission, prop.GetValue(null).ToString()));
-            //    }
-            //});
             
 
             services.AddAuthentication(options => // remove the   options if Cookie auth is desired
             {
-                // Identity made Cookie authentication the default.
-                // However, we want JWT Bearer Auth to be the default.
                 options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
                 options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
             })
@@ -70,6 +59,8 @@ namespace Transfer
                         ValidAudience = config["Tokens:Audience"],
                         IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(config["Tokens:Key"]))
                     };
+
+                    // needed for SignalR 
 
                     // We have to hook the OnMessageReceived event in order to
                     // allow the JWT authentication handler to read the access
@@ -116,7 +107,6 @@ namespace Transfer
             {
                 cfg.UseSqlServer(config.GetConnectionString("TransferConnectionString"));
             });
-
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

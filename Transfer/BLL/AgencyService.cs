@@ -47,6 +47,7 @@ namespace Transfer.BLL
         }
 
         // this one is not nedeed?
+        // Could not break update method into subroutines because of Unit of Work
         public IEnumerable<AgencyPartnersViewModel> GetAgencyPartners(object id)
         {
             using (var uow = new UnitOfWork(ctx))
@@ -141,20 +142,25 @@ namespace Transfer.BLL
         public Agency Update(AgencyUpdateViewModel model, object agencyId)
         {
          //  var oldAgencyPartners = GetAgencyPartners(agencyId).ToList(); // cant do this because context will get disposed
+
             using (var uow = new UnitOfWork(ctx))
             {
-                // partners before update
                 List<AgencyPartnersViewModel> oldPartners = new List<AgencyPartnersViewModel>();
                 var allPartners = uow.partnerRepository.GetAll();
                 var agency = uow.agencyRepository.GetById((int)agencyId);
                 var partnersIds = agency.AgencyPartners.ToList();
                 List<Partner> partners = new List<Partner>();
+                // za svakog partnera dohvacene agencije instaciram Partner objekt i dodajem ga u listu partners
                 foreach (var partner in partnersIds)
                 {
                     partners.Add(partner.Partner);
                 }
+                
                 var notAgencyPartners = allPartners.Except(partners);
 
+                // this can be written more elegantly
+                // Going through all partners and flagging them depending if they're from that agency
+                // Getting the list of partners from agency before update
                 foreach (var p in notAgencyPartners)
                 {
                     var d = new AgencyPartnersViewModel
@@ -176,7 +182,8 @@ namespace Transfer.BLL
                     };
                     oldPartners.Add(d);
                 }
-                // partners before update
+
+                // in model.AgencyPartners are all ids from partners and corresponding flags depending on checkbox value FromAgency
                 foreach (var newAgencyPartner in model.AgencyPartners)
                 {
                     var oldAgencyPartner = oldPartners.First(id => id.PartnerId == newAgencyPartner.PartnerId);
@@ -184,12 +191,12 @@ namespace Transfer.BLL
                     {
                         if (oldAgencyPartner.FromAgency != newAgencyPartner.FromAgency) // if there is a difference from the old join table
                         {
-                            if (newAgencyPartner.FromAgency == true) // partner is added to agency
+                            if (newAgencyPartner.FromAgency) // partner is added to agency
                             {
                                 agency.AgencyPartners.Add(
                                     new AgencyPartner
                                     {
-                                        PartnerId = (int)newAgencyPartner.PartnerId,
+                                        PartnerId = newAgencyPartner.PartnerId,
                                         AgencyId = (int)agencyId
                                     });
                             }
@@ -202,7 +209,7 @@ namespace Transfer.BLL
                         }
                         else // there is no difference in join table entry
                         {
-                            continue;
+                            ;
                         }
                     }
                 }

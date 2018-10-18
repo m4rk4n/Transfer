@@ -15,7 +15,7 @@ using Transfer.ViewModels;
 
 namespace Transfer.Controllers
 {
-    //[Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "Admin")]
+    [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "Admin")]
     [Route("api/[controller]")]
     public class VehicleController : Controller
     {
@@ -43,19 +43,13 @@ namespace Transfer.Controllers
             {
                 if (ModelState.IsValid)
                 {
-                    // mapper!!!
                     Vehicle newVehicle = new Vehicle
                     {
                         Name = model.Name,
                         PlateNumber = model.PlateNumber,
                         RegistrationDate = model.RegistrationDate,
                         Note = model.Note,
-                        // Id, Partner, LastService, LastServiceTransferId
-                    };
-
-                    // var currentUser = await userManager.FindByNameAsync(User.Identity.Name); // hmm, debug through this one
-
-                    
+                    };                    
 
                     using (var uow = new UnitOfWork(this.ctx))
                     {
@@ -63,12 +57,12 @@ namespace Transfer.Controllers
                         if (uow.CompleteAsync().Result)
                         // or if (uow.Complete())
                         {
-                            logger.LogInformation("new partner created");
-                            return Created($"/api/partner/{newVehicle.Id}", newVehicle);
+                            logger.LogInformation("new vehicle created");
+                            return Created($"/api/vehicle/{newVehicle.Id}", newVehicle);
                         }
                         else
                         {
-                            logger.LogError("Request has been bad");
+                            logger.LogError("Bad request");
                             return BadRequest(ModelState);
                         }
                     }
@@ -80,11 +74,11 @@ namespace Transfer.Controllers
             }
             catch (Exception ex)
             {
-                logger.LogError($"Failed to save new partner: {ex}");
-                return BadRequest($"Failed to save new partner beacuse of exception, end user better not see this one :)");
+                logger.LogError($"Failed to save new vehicle: {ex}");
+                return BadRequest($"Failed to save new vehicle beacuse of exception, end user better not see this one :)");
             }
         }
-        // GET api/values
+
         [HttpGet]
         public ActionResult<IEnumerable<VehicleViewModel>> Get()
         {
@@ -99,7 +93,6 @@ namespace Transfer.Controllers
             }
         }
 
-        // GET api/values/5
         [HttpGet("{id}")]
         public ActionResult<VehicleViewModel> Get(int id)
         {
@@ -114,11 +107,9 @@ namespace Transfer.Controllers
             }
         }
 
-        // PUT api/values/5
         [HttpPut("{id}")]
         public ActionResult<PartnerViewModel> Put(int id, [FromBody] VehicleViewModel model)
         {
-            // var partner = mapper.Map<Partner>(model.Partner);
             var updatedVehicle = service.Update(mapper.Map<Vehicle>(model), model.Id);
             if (updatedVehicle != null)
             {
@@ -131,13 +122,11 @@ namespace Transfer.Controllers
             }
         }
 
-        // DELETE api/values/5
         [HttpDelete("{id}")]
         public ActionResult Delete(int id)
         {
-            //var partner = service.GetById(id);
             service.Remove(id);
-            return Ok(); // kako ovdje provjeru 
+            return NoContent(); // kako ovdje provjeru 
         }
     }
 }

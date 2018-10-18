@@ -25,30 +25,18 @@ namespace Transfer.BLL
 
         public Models.Transfer Add(Models.Transfer entity)
         {
-            // set vehicle lastService here
             using (var uow = new UnitOfWork(ctx))
             {
-                if (entity.Partner.VehicleId != null) // maybe  a better check
-                {
-                   // var vehicle = uow.vehicleRepository.GetById(entity.Partner.VehicleId);
-                //    vehicle.LastServiceTransferId = entity.Id;
-                    // or
-                  //  vehicle.LastService = entity;
-                }
-                // var vehicle = entity.Partner.Vehicle;
-
-                // Models.Transfer transfer = 
-                entity.AgencyId = entity.Agency.Id;
-                entity.Agency = null; // in order not to save  related entities in db because they already exist
+                if (entity.Agency != null)
+                    entity.AgencyId = entity.Agency.Id;
+                entity.Agency = null; // in order not to save related entities in db because they already exist // i don't need these nulls because i don't work with enities
                 entity.PartnerId = entity.Partner.Id;
                 var vehicle = uow.vehicleRepository.GetById(entity.Partner.VehicleId);
-                //vehicle.LastServiceTransferId = entity.Id;
                 entity.Partner = null;
                 entity.VehicleId = vehicle.Id;
 
                 uow.transferRepository.Add(entity);
                 
-                //vehicle.LastService = entity;
                 if (uow.Complete())
                 {
                     logger.LogInformation("new transfer created");

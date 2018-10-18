@@ -17,7 +17,7 @@ namespace Transfer.DAL.EntityConfigurations
            .HasOne(p => p.Vehicle)
            .WithOne(i => i.Partner)
            .HasForeignKey<Partner>(p => p.VehicleId);
-
+            
             builder.Property(p => p.VehicleId).IsRequired(false);
         }
     }

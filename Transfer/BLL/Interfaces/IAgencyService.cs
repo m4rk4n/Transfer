@@ -11,10 +11,10 @@ namespace Transfer.BLL.Interfaces
     public interface IAgencyService
     {
         IEnumerable<Agency> GetAll();
+        IEnumerable<AgencyPartnersViewModel> GetAgencyPartners(object id);
         Agency GetById(object id);
         Agency Add(Agency entity);
         Agency Update(AgencyUpdateViewModel model, object agencyId);
         void Remove(object id);
-        IEnumerable<AgencyPartnersViewModel> GetAgencyPartners(object id);
     }
 }

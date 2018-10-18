@@ -14,7 +14,9 @@ namespace Transfer.Models
         public bool AgencyTravel { get; set; }
         public string FirstName { get; set; }
         public string LastName { get; set; }
+        [EmailAddress]
         public string Email { get; set; }
+        [Phone]
         public string PhoneNumber { get; set; }
         public string Country { get; set; }
         public string TransferFrom { get; set; }

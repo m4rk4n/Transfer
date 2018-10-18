@@ -10,6 +10,7 @@ namespace Transfer.DAL
 {
     public class TransferSeeder
     {
+        //
         private readonly TransferContext ctx;
         private readonly RoleManager<IdentityRole> roleManager;
         private readonly UserManager<TransferUser> userManager;

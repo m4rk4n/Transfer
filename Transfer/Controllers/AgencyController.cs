@@ -41,7 +41,6 @@ namespace Transfer.Controllers
             {
                 if (ModelState.IsValid)
                 {
-                    // mapper!!!
                     Agency newAgency = new Agency
                     {
                         Name = model.Name,
@@ -49,24 +48,6 @@ namespace Transfer.Controllers
                         Email = model.Email,
                         Address = model.Address
                     };
-
-                    // var currentUser = await userManager.FindByNameAsync(User.Identity.Name); // hmm, debug through this one
-
-                    //using (var uow = new UnitOfWork(this.ctx))
-                    //{
-                    //    uow.agencyRepository.Add(newAgency);
-                    //    if (uow.CompleteAsync().Result)
-                    //    // or if (uow.Complete())
-                    //    {
-                    //        logger.LogInformation("new partner created");
-                    //        return Created($"/api/partner/{newAgency.Id}", newAgency);
-                    //    }
-                    //    else
-                    //    {
-                    //        logger.LogError("Request has been bad");
-                    //        return BadRequest(ModelState);
-                    //    }
-                    //}
 
                     var savedAgency = service.Add(newAgency);
                     if (savedAgency != null)
@@ -90,7 +71,6 @@ namespace Transfer.Controllers
             }
         }
 
-        // GET api/values
         [HttpGet]
         public ActionResult<IEnumerable<AgencyWithIdViewModel>> Get()
         {
@@ -105,7 +85,6 @@ namespace Transfer.Controllers
             }
         }
 
-        // GET api/values/5
         [HttpGet("{id}")]
         public ActionResult<AgencyWithIdViewModel> Get(int id)
         {
@@ -120,13 +99,11 @@ namespace Transfer.Controllers
             }
         }
 
-        // PUT api/values/5
         [HttpPut("{id}")]
         public ActionResult Put(int id, [FromBody] AgencyUpdateViewModel model)
-        {// if it fails, update join table manually
-            var agency = mapper.Map<Agency>(model.Agency);
+        {
+            // if it fails, update join table manually
             var updatedAgency = service.Update(model, model.Agency.Id); // disposed context
-            //var updatedAgencyPartners = service.UpdateAgencyPartners(model.AgencyPartners.ToList(), model.Agency.Id);
             if (updatedAgency != null )
             {
                 return Ok(updatedAgency);
@@ -137,21 +114,11 @@ namespace Transfer.Controllers
             }
         }
 
-        // DELETE api/values/5
         [HttpDelete("{id}")]
         public ActionResult Delete(int id)
         {
-            // var agency = service.GetById(id);
             service.Remove(id);
-            return Ok(); // kako ovdje provjeru 
+            return NoContent(); // kako ovdje provjeru 
         }
-
-        // cant make it work
-       //// [HttpGet("{id}")]
-       // public ActionResult<AgencyPartnersViewModel> Partners()
-       // {
-       //     var id = 3;
-       //     return Ok(service.GetAgencyPartners(id));
-       // }
     }
 }

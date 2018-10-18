@@ -12,6 +12,7 @@ namespace Transfer.DAL
 {
     public class UnitOfWork : IUnitOfWork
     {
+        
         private readonly TransferContext ctx;
 
         public IRepository<Partner> partnerRepository;

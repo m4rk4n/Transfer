@@ -20,7 +20,6 @@ namespace Transfer.DAL
                 .ReverseMap();
 
             CreateMap<Agency, AgencyWithIdViewModel>()
-                //.ForSourceMember(m => m.AgencyPartners, opt => opt.Ignore())
                 .ReverseMap();
 
             CreateMap<Vehicle, VehicleViewModel>()

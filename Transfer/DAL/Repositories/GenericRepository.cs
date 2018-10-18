@@ -47,7 +47,6 @@ namespace Transfer.DAL.Repositories
             if (exist != null)
             {
                 Context.Entry(exist).CurrentValues.SetValues(entity);
-                // Context.SaveChanges(); // it should be done  in  UoW, but it works this way
             }
             return exist;
         }
